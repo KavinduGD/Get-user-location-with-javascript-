@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>My Location</title>
+  </head>
+  <body>
+    <h1>My Location</h1>
+    <p>Latitude: <span id="latitude"></span></p>
+    <p>Longitude: <span id="longitude"></span></p>
+
+    <script>
+      function getLocation() {
+        if (navigator.geolocation) {
+          navigator.permissions
+            .query({ name: "geolocation" })
+            .then(function (result) {
+              if (result.state === "granted") {
+                navigator.geolocation.getCurrentPosition(showPosition);
+              } else if (result.state === "prompt") {
+                navigator.geolocation.getCurrentPosition(
+                  showPosition,
+                  showError
+                );
+              } else {
+                showError();
+              }
+            });
+        } else {
+          showError();
+        }
+      }
+
+      function showPosition(position) {
+        document.getElementById("latitude").innerHTML =
+          position.coords.latitude;
+        document.getElementById("longitude").innerHTML =
+          position.coords.longitude;
+      }
+
+      function showError() {
+        document.getElementById("latitude").innerHTML = "N/A";
+        document.getElementById("longitude").innerHTML = "N/A";
+        alert("Geolocation permission denied.");
+      }
+
+      getLocation();
+    </script>
+  </body>
+</html>
